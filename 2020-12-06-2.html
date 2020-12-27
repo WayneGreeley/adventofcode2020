@@ -101,9 +101,11 @@
             'b',
             ''
         ];
-        
+
         let answerArray = [];
         let groupAnswerArray = [];
+
+        let resultNumber = 0;
 
         //condense input
         inputArray.forEach((inputItem,i,array) => {
@@ -115,44 +117,23 @@
             }
         });
 
-        console.log('number of groups:', answerArray.length)
-
-        let resultNumber = 0;
-        
-        answerArray.forEach((inputItem,i,array) => { //each group
-            
-            let firstuniqueLetters = [];
-            let j = inputItem.length;
-            for (k=0;k<j;k++) { //each group member
-                let y = inputItem[k].length;
-                console.log('inputItem[k]',inputItem[k]);
-                if (k === 0) {
-                    for (x=0;x<y;x++) { //each group member answer
-                        //make a set of the first persons answers
-                        firstuniqueLetters.push(inputItem[k][x]);
+        //for each group
+        for (k = 0; k < answerArray.length; k++){
+            //for the number of letter in the first persons answers
+            for (i = 0; i < answerArray[k][0].length; i++){
+                let chr = answerArray[k][0].charAt(i)
+                let chrInAll = true;
+                //for each person in the group
+                for (j = 1; j < answerArray[k].length; j++){
+                    if (answerArray[k][j].indexOf(chr) < 0 ) {
+                        chrInAll = false;
                     }
-                } else {
-                    let nextuniqueLetters = [];
-                    for (x=0;x<y;x++) { //each group member answer
-                        //make a set of the next persons answers
-                        nextuniqueLetters.push(inputItem[k][x]);
-                    }
-                    firstuniqueLetters.forEach((letter,z,array) => {
-                        //if the first person had a letter that the next persons didnt, remove it
-                        if (!nextuniqueLetters.includes(letter)) {
-                            //console.log('remove:',letter)
-                            firstuniqueLetters.splice(z, 1);
-                        }
-                    });
                 }
-                //console.log('k:',k,firstuniqueLetters)
+                if (chrInAll) {
+                    resultNumber++;
+                }
             }
-
-            console.log(inputItem, ' - ', firstuniqueLetters.length, ' - ', firstuniqueLetters);
-
-            resultNumber += firstuniqueLetters.length;
-            
-        });
+        }
 
         document.getElementById("result").innerHTML = (resultNumber);
 
